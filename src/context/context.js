@@ -6,6 +6,7 @@ const TaskContext = createContext()
 const TaskProvider = ({ children }) => {
   const [tasks, setTasks] = useState([])
   const [loading, setLoading] = useState(true)
+  const [completed, setCompleted] = useState(false)
 
   const getAllTasks = () => {
     setLoading(true)
@@ -29,15 +30,17 @@ const TaskProvider = ({ children }) => {
 
   // delete / remove task
   const removeTask = (id) => {
-    if (window.confirm('Are you Sure ?')) {
-      db.collection('tasks').doc(id).delete()
-    }
+    // if (window.confirm('Are you Sure ?')) {
+    db.collection('tasks').doc(id).delete()
+    // }
   }
 
   // update task
   const updateCompleted = (id) => {
+    setCompleted(!completed)
+    // update completed in firebase
     db.collection('tasks').doc(id).update({
-      completed: true,
+      completed: completed,
     })
   }
 

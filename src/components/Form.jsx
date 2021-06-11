@@ -1,6 +1,12 @@
 import React, { useContext, useState } from 'react'
 import { TaskContext } from '../context/context'
 
+import { ToastContainer, toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
+
+const success = () => toast.success('Added successfully !')
+const warning = () => toast.warning('Task is Empty ')
+
 const Form = () => {
   const { createTask } = useContext(TaskContext)
   const [task, setTask] = useState({
@@ -12,12 +18,24 @@ const Form = () => {
   const clickHandler = (e) => {
     e.preventDefault()
 
-    createTask(task)
+    if (task.title.trim('') !== '') {
+      createTask(task)
+      // reset form value
+      setTask({
+        title: '',
+        desc: '',
+        completed: false,
+      })
+      success()
+    } else {
+      warning()
+    }
   }
 
   return (
     <>
       <h1 className='display-5'>Form</h1>
+      <ToastContainer />
       <form className='mb-5'>
         <div className='mb-3'>
           <input
